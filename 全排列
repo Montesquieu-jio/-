@@ -1,0 +1,39 @@
+class Test01_3 {
+    public String[] permutation(String s) {
+        if(s == null) return new String[0];
+        List<String> result = new ArrayList<>();
+        StringBuilder temp = new StringBuilder();
+        //记录访问过用的
+        boolean[] visit = new boolean[s.length()];
+        //String类的toCharArray()方法，将字符串转换成字符数组
+        char[] sChar = s.toCharArray();
+        //Arrays类的sort()方法将字符数组排序
+        Arrays.sort(sChar);
+        dfs(sChar,result,temp,visit);
+        //将list形式的字符串集合转换成字符串数组
+        String[] str = new String[result.size()];
+        for(int i = 0;i<result.size();i++){
+            str[i] = result.get(i);
+        }
+        return str;
+    }
+    public void dfs(char[] sChar,List<String> result,StringBuilder temp,boolean[] visit){
+        if(temp.length() == sChar.length) {
+            //说明完成了一个
+            result.add(new String(temp));
+            return;
+        }
+        for(int i = 0;i < sChar.length;i++){
+            if(visit[i] == true) continue;
+            if(i > 0 && sChar[i-1] == sChar[i] && !visit[i-1]) continue;
+            temp.append(sChar[i]);
+            visit[i] = true;
+            dfs(sChar,result,temp,visit);
+            //StringBuilder中的delete(int start,int end),包括start不包括end
+            //所以要删除最后一个元素，要用以下的办法
+            temp.deleteCharAt(temp.length()-1).toString();
+            visit[i] = false;
+        }
+
+    }
+}
